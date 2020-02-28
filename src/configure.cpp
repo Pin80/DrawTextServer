@@ -37,11 +37,10 @@ void make_configuration(appconfig_t &_ac, int argc, char *argv[])
     }
     if (vm.count("port"))
     {
-        LOG << str_sum("Port: ", _ac.m_sc.m_port);
+        DBGOUT(str_sum("Port: ", _ac.m_sc.m_port))
     }
     if (vm.count("clientmode"))
     {
-        LOG << "application is working as client";
         _ac.m_clientmode = true;
     }
     else

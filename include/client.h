@@ -111,8 +111,12 @@ public:
     void do_disconnect(std::size_t idx);
     /// Получить статистику соединений
     std::string getHandlerStatistics();
+    /// Проверить что клиент готов к приёму команд.
+    bool isStarted() const noexcept
+    { return m_isStarted; }
     /// Проверить что все соединения завершены
-    bool isWorking() const { return m_isworking; }
+    bool isWorking() const noexcept
+    { return m_isworking; }
     /// Все сокеты успешно соединились с сервером
     bool allConnected()
     {
@@ -149,6 +153,7 @@ protected:
     bool refresh_buffandcomplbin(std::size_t _idx, std::size_t _txfed);
     bool refresh_buffandcompl(std::size_t _idx);
 private:
+    std::atomic_bool m_isStarted = false;
     std::string m_host;
     std::uint16_t m_port;
     tcp::endpoint m_endpoint;

@@ -28,6 +28,10 @@ TClient::TClient(clientconfig_t &_cc)
         auto pthread = new managedThread_t{ func, this };
         m_pthread.reset(pthread);
         m_pthread->StartLoop();
+        while(!isStarted())
+        {
+            std::this_thread::sleep_for(std::chrono::microseconds(100));
+        }
     } catch (...)
     {
         errspace::show_errmsg(FUNCTION);
@@ -151,6 +155,7 @@ void TClient::Process_iooperations(IThread*)
                               [](const TSockPtr& _sock)
                         { return _sock->is_open();  });
     };
+    m_isStarted = true;
     while(isrng)
     {
         // Start all operations
@@ -184,6 +189,7 @@ void TClient::Process_iooperations(IThread*)
             if(!isPolling)
             {
                 DBGOUT("c: polling is stopping")
+                m_isStarted = false;
                 for(auto& _ptr: m_timerpool)
                 {
                     _ptr->cancel();
@@ -196,6 +202,7 @@ void TClient::Process_iooperations(IThread*)
         }
         isrng = m_pthread->isRunning();
     }
+    m_isStarted = false;
     LOG << "c: clent's thread's loop is finished";
 }
 

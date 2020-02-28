@@ -34,6 +34,7 @@ controller_t::controller_t(int argc, char *argv[])
     int ic = m_ac.m_first;
     if (m_ac.m_clientmode)
     {
+        OUT("DrawText Client is started")
         m_ac.m_cc.m_pproc = std::make_shared<ClientImgProcessor>(fullname_iimg,
                                                       fullname_vimg,
                                                       fullname_oimg);
@@ -42,6 +43,7 @@ controller_t::controller_t(int argc, char *argv[])
     }
     else
     {
+        OUT("DrawText Server is startet")
         ns_wd::start_wd(1000,10, &on_wdtimeout);
         std::signal(m_ac.m_signal, signal_handler);
         m_ac.m_sc.m_proc = std::make_unique<servimgProcessor_t>();
@@ -61,10 +63,18 @@ controller_t::~controller_t()
 
 void controller_t::exec()
 {
+    const char * server_help = R"(
+    s - start server
+    d - stop server
+    q - quit )";
+    const char * client_help = R"(
+    c - send command
+    q - quit )";
     if (m_ac.m_first == 'q')
     { return; }
     int ic = m_ac.m_first;
     char action = 0;
+    OUT("for help input 'h' and press enter.")
     while(isRunning)
     {
         OUT("enter command:")
@@ -124,8 +134,21 @@ void controller_t::exec()
                 }
                 break;
             }
+            case 'h':
+            {
+                if (m_ac.m_clientmode)
+                {
+                    OUT(client_help)
+                }
+                else
+                {
+                    OUT(server_help)
+                }
+                break;
+            }
             default:
             {
+               OUT("unknown command")
                break;
             }
         }// switch
