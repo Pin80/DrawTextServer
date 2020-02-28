@@ -182,6 +182,8 @@ set(SRC_MAIN_LIST
 
 file(GLOB doc_files
     "./doc/uml/*"
+    "./patch/thread/pthread/*"
+    "./patch/thread/detail/*"
 )
 
 # Различные файлы
