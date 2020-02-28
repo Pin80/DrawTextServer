@@ -1,0 +1,22 @@
+Установка на ubuntu 18
+1)Скачайте boost
+https://www.boost.org/users/history/version_1_65_1.html
+Установите в нужную папку
+Также можно установить патч и папки patch
+
+2)Установите Cairo, если не установлен
+apt-get install libcairo2-dev
+
+3)Запустите cmake-gui и установите пути к boost
+
+4)Соберите boost
+./bootstrap.sh --with-toolset=gcc
+./b2 -j4 toolset=gcc  address-model=64 cxxflags="-std=gnu++0x -fPIC" cflags=-fPIC
+
+5)сгенерируйте Makefile с помощью cmake-gui
+и соберите приложение.
+
+В результате жолжно появиться бинарник drawtext
+(запуск с ключом --clientmode в режиме клиента, а без этого ключа )
+остальные ключи можно узнать: drawtext --help
+Если возникли трудности пишите на github

@@ -1,7 +1,7 @@
 # cmake не ниже 3.5
 cmake_minimum_required(VERSION 3.5)
 # С++
-project(itv_testtask LANGUAGES CXX)
+project(drawtext LANGUAGES CXX)
 
 # Требуется поддержка 17го стандарта
 set(CMAKE_CXX_STANDARD 17)
