@@ -11,6 +11,8 @@
 #include "../include/error.h"
 #include "../include/server.h"
 #include "../include/client.h"
+#include "../include/image_cproc.h"
+#include "../include/image_sproc.h"
 
 #define FILEPATH  "./Resources"
 static const char * fullname_iimg = FILEPATH"/img_in.png";
@@ -21,6 +23,7 @@ struct appconfig_t
 {
     serverconfig_t m_sc;
     clientconfig_t m_cc;
+    ciprocessor_t m_ci;
     bool m_clientmode = false;
     int m_signal = SIGUSR1;
     char m_first = 'q';

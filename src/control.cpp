@@ -11,11 +11,11 @@ static std::atomic_bool isRunning = true;
 
 void signal_handler(int _signal)
 {
-  if (_signal == SIGUSR1)
-  {
+    if (_signal == SIGUSR1)
+    {
       std::atomic_signal_fence(std::memory_order_release);
       isRunning.store(false, std::memory_order_relaxed);
-  }
+    }
 }
 
 static std::atomic_bool  is_wdtimeout = false;
@@ -35,9 +35,7 @@ controller_t::controller_t(int argc, char *argv[])
     if (m_ac.m_clientmode)
     {
         OUT("DrawText Client is started")
-        m_ac.m_cc.m_pproc = std::make_shared<ClientImgProcessor>(fullname_iimg,
-                                                      fullname_vimg,
-                                                      fullname_oimg);
+        m_ac.m_cc.m_pproc = std::make_shared<ClientImgProcessor>(m_ac.m_ci);
         m_ac.m_cc.m_paral = 1;
         m_pclient = std::make_shared<TClient>(m_ac.m_cc);
     }
@@ -63,12 +61,16 @@ controller_t::~controller_t()
 
 void controller_t::exec()
 {
-    const char * server_help = R"(
-    s - start server
+    const char * server_help =
+ R"(    s - start server
     d - stop server
+    h - this help
+    i - info
     q - quit )";
-    const char * client_help = R"(
-    c - send command
+    const char * client_help =
+ R"(    c - send command
+    h - this help
+    i - info
     q - quit )";
     if (m_ac.m_first == 'q')
     { return; }
@@ -143,6 +145,20 @@ void controller_t::exec()
                 else
                 {
                     OUT(server_help)
+                }
+                break;
+            }
+            case 'i':
+            {
+                if (m_ac.m_clientmode)
+                {
+                    OUT(str_sum("Host:", m_ac.m_cc.m_host))
+                    OUT(str_sum("Port:", m_ac.m_cc.m_port))
+                }
+                else
+                {
+                    OUT(str_sum("Host:", m_ac.m_sc.m_addr))
+                    OUT(str_sum("Port:", m_ac.m_sc.m_port))
                 }
                 break;
             }

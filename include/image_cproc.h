@@ -16,6 +16,14 @@
 #include "../include/processor.h"
 #include "../include/comb_packet.h"
 
+struct ciprocessor_t
+{
+    bool m_compare = false;
+    std::string m_fname;
+    std::string m_vname;
+    std::string m_oname;
+};
+
 class ClientImgProcessor: public IProcessor
 {
 public:
@@ -41,9 +49,7 @@ public:
             m_isavailble = _ctx.m_isavailble;
         }
     };
-    ClientImgProcessor(const std::string& _fname,
-                       const std::string& _vname,
-                       const std::string& _oname);
+    ClientImgProcessor(ciprocessor_t &_config);
     virtual void get_input_data(cpconv_t _data,
                                 const ticket_t& _tk) override final;
     virtual bool process_output_data(mvconv_t _data,
@@ -85,6 +91,7 @@ protected:
     std::size_t m_size_valid;
     std::map<ticket_t, context_t> m_contextpool;
     std::string m_outname;
+    bool m_compare = false;
 };
 
 

@@ -31,17 +31,16 @@ static const char * simple_reply_busy =
         "BUSY\r\n\r\n";
 
 
-ClientImgProcessor::ClientImgProcessor(const std::string& _fname,
-                                       const std::string& _vname,
-                                       const std::string& _oname):
-    m_outname(_oname)
+ClientImgProcessor::ClientImgProcessor(ciprocessor_t& _config):
+    m_outname(_config.m_oname),
+    m_compare(_config.m_compare)
 {
     const char * FUNCTION = __FUNCTION__;
     try
     {   
         //Читаем экземляр запроса
         std::ifstream ifstm_req;
-        ifstm_req.open(_fname);
+        ifstm_req.open(_config.m_fname);
         if (!ifstm_req.is_open())
             { throw std::runtime_error("file not found"); }
         ifstm_req.seekg(0, std::ios::end);
@@ -59,7 +58,7 @@ ClientImgProcessor::ClientImgProcessor(const std::string& _fname,
 
         //Читаем из файла ответ для валидации
         std::ifstream ifstm_val;
-        ifstm_val.open(_vname);
+        ifstm_val.open(_config.m_vname);
         if (!ifstm_val.is_open())
             { throw std::runtime_error("file not found"); }
         ifstm_val.seekg (0, std::ios::end);
@@ -179,6 +178,7 @@ bool ClientImgProcessor::process_output_data(mvconv_t _data,
                 return result;
             }
             auto uc = std::any_cast<Tpackstruct>(unpack.m_current);
+
             result = compare_resp(_tk,
                                   valconv_t(uc->m_data.get()),
                                   uc->m_imgsize);
