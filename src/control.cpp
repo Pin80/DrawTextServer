@@ -44,7 +44,7 @@ controller_t::controller_t(int argc, char *argv[])
         OUT("DrawText Server is startet")
         ns_wd::start_wd(1000,10, &on_wdtimeout);
         std::signal(m_ac.m_signal, signal_handler);
-        m_ac.m_sc.m_proc = std::make_unique<servimgProcessor_t>();
+        m_ac.m_sc.m_proc = std::make_unique<servimgProcessor_t>(m_ac.m_si);
         m_pserver = TServer::CreateServer(m_ac.m_sc);
     }
 }
@@ -154,11 +154,13 @@ void controller_t::exec()
                 {
                     OUT(str_sum("Host:", m_ac.m_cc.m_host))
                     OUT(str_sum("Port:", m_ac.m_cc.m_port))
+                    OUT(m_pclient->getHandlerStatistics())
                 }
                 else
                 {
                     OUT(str_sum("Host:", m_ac.m_sc.m_addr))
                     OUT(str_sum("Port:", m_ac.m_sc.m_port))
+                    OUT(m_pserver->getHandlerStatistics())
                 }
                 break;
             }

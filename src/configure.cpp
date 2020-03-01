@@ -19,6 +19,7 @@ void make_configuration(appconfig_t &_ac, int argc, char *argv[])
     _ac.m_sc.m_threadnumber = 1;
     _ac.m_cc.m_host = _ac.m_sc.m_addr;
     _ac.m_cc.m_port = _ac.m_sc.m_port;
+    _ac.m_si.m_queuesize = CONNECTION_LIMIT;
     desc.add_options()
       ("help,h", "Help screen")
       ("start", "Start server")

@@ -24,6 +24,7 @@ struct appconfig_t
     serverconfig_t m_sc;
     clientconfig_t m_cc;
     ciprocessor_t m_ci;
+    siprocessor_t m_si;
     bool m_clientmode = false;
     int m_signal = SIGUSR1;
     char m_first = 'q';

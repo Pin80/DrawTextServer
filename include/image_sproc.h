@@ -16,13 +16,20 @@
 #include "../include/processor.h"
 #include "../include/comb_packet.h"
 
+struct siprocessor_t
+{
+    /// Размер очереди по умолчанию
+    static constexpr auto QUEUESIZE = 10;
+    std::uint16_t m_queuesize = QUEUESIZE;
+};
+
 /** @class servimgProcessor_t
  *  @brief Класс обработчика картинок
  */
 class servimgProcessor_t: public ISMP
 {
 public:
-    servimgProcessor_t();
+    servimgProcessor_t(siprocessor_t &_config);
     virtual void get_input_data(spair_t &_data,
                                 const ticket_t& _tk) override final;
     virtual bool process_output_data(mvconv_t _data,
@@ -57,13 +64,11 @@ private:
                             boost::lockfree::queue<std::uint8_t, fixed_trait>;
     void Process(IThread* _th);
     upair_t drawText(upair_t& _packet);
-    /// Размер очереди
-    static constexpr auto QUEUESIZE = 10;
     /// Сколько будет хранится ответ
     static constexpr auto REPTIMEOUT = 5;
-    std::array<std::unique_ptr<context_t>, QUEUESIZE> m_request_stock;
-    std::array<std::unique_ptr<context_t>, QUEUESIZE> m_response_stock;
-    std::array<std::atomic_int, QUEUESIZE> m_rep_timeout;
+    std::vector<std::unique_ptr<context_t>> m_request_stock;
+    std::vector<std::unique_ptr<context_t>> m_response_stock;
+    std::vector<atomwrapper<int>> m_rep_timeout;
     lfreeIdxStock_t m_reqfreeidx_fifo;
     lfreeQueue_t m_request_queue;
     /// Буффер для хранения текстового ответа
@@ -82,6 +87,8 @@ private:
     mngthreadPtr_t m_pthread;
     /// Флаг запуска обработчика запросов
     std::atomic_bool m_isstarted = false;
+    ///
+    std::uint16_t m_queuesize = 0;
 };
 
 #endif // IMAGE_SPROC_H

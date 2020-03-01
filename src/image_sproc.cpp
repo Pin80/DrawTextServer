@@ -7,28 +7,26 @@
  */
 #include "../include/image_sproc.h"
 
-static const char * simple_reply =
-        "REPLY\r\n\r\n";
-static const char * simple_reply_good =
-        "GOOD\r\n\r\n";
 static const char * simple_reply_bad =
         "FAIL\r\n\r\n";
-static const char * simple_reply_ackw =
-        "ACKNOLEDGE\r\n\r\n";
 static const char * simple_reply_busy =
         "BUSY\r\n\r\n";
 
 
-servimgProcessor_t::servimgProcessor_t() :
-    m_reqfreeidx_fifo(QUEUESIZE),
-    m_request_queue(QUEUESIZE)
+servimgProcessor_t::servimgProcessor_t(siprocessor_t&_config) :
+    m_reqfreeidx_fifo(_config.m_queuesize),
+    m_request_queue(_config.m_queuesize),
+    m_queuesize(_config.m_queuesize)
 {
     const char * FUNCTION = __FUNCTION__;
     try
     { 
-        for (std::uint8_t i = 0; i < QUEUESIZE; i++)
+        m_request_stock.resize(m_queuesize);
+        m_response_stock.resize(m_queuesize);
+        m_rep_timeout.resize(m_queuesize);
+        for (std::uint8_t i = 0; i < m_queuesize; i++)
         {
-            m_rep_timeout[i] = 0;
+            m_rep_timeout[i]._a = 0;
             m_reqfreeidx_fifo.bounded_push(i);
         }
         auto size = strlen(simple_reply_busy);
@@ -66,8 +64,8 @@ void servimgProcessor_t::get_input_data(spair_t& _data,
 {
     bool result = false;
     auto rep_stock_idx = _tk.getProcVal();
-    assert(rep_stock_idx < QUEUESIZE);
-    result = (m_rep_timeout[rep_stock_idx] > 0);
+    assert(rep_stock_idx < m_queuesize);
+    result = (m_rep_timeout[rep_stock_idx]._a > 0);
     if (!result)
     {
         return;
@@ -94,7 +92,7 @@ bool servimgProcessor_t::isAvailable(const ticket_t& _tk)
 {
     std::uint8_t rep_stock_idx = _tk.getProcVal();
     assert(rep_stock_idx < QUEUESIZE);
-    int timeout = m_rep_timeout[rep_stock_idx];
+    int timeout = m_rep_timeout[rep_stock_idx]._a;
     return timeout > 0;
 }
 
@@ -123,7 +121,7 @@ bool servimgProcessor_t::process_output_data(mvconv_t _data,
             pctx->m_handlerptr = _hnd;
             _tk.setProcVal(number);
             auto tk = _tk;
-            m_rep_timeout[number] = 0;
+            m_rep_timeout[number]._a = 0;
             m_request_queue.bounded_push(tk);
         }
     }
@@ -175,13 +173,14 @@ void servimgProcessor_t::Process(IThread *_th)
             auto pctx = new context_t;
             pctx->m_pbbuffer_req = std::move(response);
             m_response_stock[rep_stock_idx].reset(pctx);
-            for (auto i = 0; i < QUEUESIZE; i++)
+            // decrease timeout
+            for (auto i = 0; i < m_queuesize; i++)
             {
-                int old_val = m_rep_timeout[i].load();
+                int old_val = m_rep_timeout[i]._a.load();
                 auto new_val = old_val? old_val--: old_val;
-                m_rep_timeout[i].compare_exchange_weak(old_val, new_val);
+                m_rep_timeout[i]._a.compare_exchange_weak(old_val, new_val);
             }
-            m_rep_timeout[rep_stock_idx] = REPTIMEOUT;
+            m_rep_timeout[rep_stock_idx]._a = REPTIMEOUT;
             if (handler)
             {
                 (*handler.get())();

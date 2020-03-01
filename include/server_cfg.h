@@ -15,7 +15,7 @@ constexpr static auto BUFFLIMIT = 2*1024*1024;
 /* Maximum queue length specifiable by listen.  */
 //#define SOMAXCONN	128
 constexpr auto BOOST_CONN_LIMIT = boost::asio::socket_base::max_connections;
-constexpr auto CONNECTION_LIMIT = boost::asio::socket_base::max_connections;
+constexpr auto CONNECTION_LIMIT = 10;
 // Таймаую чтения (и записи)
 constexpr static auto TIMEOUT_READ = 20;
 // Таймаут ожидания отсоединения клиента

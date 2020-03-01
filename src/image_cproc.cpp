@@ -7,26 +7,8 @@
  */
 #include "../include/image_cproc.h"
 
-//        const auto path = "//";
-//        std::ostream request_stream(&m_request);
-//        request_stream << "GET " << path << " HTTP/1.0\r\n";
-//        request_stream << "Host: " << server << "\r\n";
-//        request_stream << "Accept: */*\r\n";
-//        request_stream << "Connection: close\r\n\r\n";
-static const char * simple_request =
-        "GET path HTTP/1.0\r\n"
-        "Host: 127.0.0.1\r\n"
-        "Accept: */*\r\n"
-        "Connection: close\r\n\r\n";
-
-static const char * simple_reply =
-        "REPLY\r\n\r\n";
-static const char * simple_reply_good =
-        "GOOD\r\n\r\n";
 static const char * simple_reply_bad =
         "FAIL\r\n\r\n";
-static const char * simple_reply_ackw =
-        "ACKNOLEDGE\r\n\r\n";
 static const char * simple_reply_busy =
         "BUSY\r\n\r\n";
 
