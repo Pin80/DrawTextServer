@@ -91,7 +91,7 @@ void servimgProcessor_t::get_input_data(spair_t& _data,
 bool servimgProcessor_t::isAvailable(const ticket_t& _tk)
 {
     std::uint8_t rep_stock_idx = _tk.getProcVal();
-    assert(rep_stock_idx < QUEUESIZE);
+    assert(rep_stock_idx < m_queuesize);
     int timeout = m_rep_timeout[rep_stock_idx]._a;
     return timeout > 0;
 }
