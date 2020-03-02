@@ -324,9 +324,9 @@ private:
     /// Множество использованных сокетов
     std::vector<std::set<ssocketPtr_t>> m_socketset_garbage;
     /// Мьютекс для доступа к m_socketset_active
-    mutable std::recursive_mutex m_mtx_active;
+    mutable std::vector<ticketspinlock_t> m_mtx_activepool;
     /// Мьютекс для доступа к m_mtx_garbage;
-    std::recursive_mutex m_mtx_garbage;
+    std::vector<ticketspinlock_t> m_mtx_garbagepool;
     /// Список указателей потоков
     std::list<std::unique_ptr<mngThread_t>> m_pmngthreadpool;
     /// Умный указатель на обработчик запросов(процессор)

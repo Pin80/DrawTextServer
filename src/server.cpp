@@ -782,6 +782,8 @@ bool TServer::Start(const char* _addr,
         };
         m_socketset_active.resize(m_threadnumber);
         m_socketset_garbage.resize(m_threadnumber);
+        m_mtx_activepool.resize(m_threadnumber);
+        m_mtx_garbagepool.resize(m_threadnumber);
         mngThread_t* mngthr = nullptr;
         // It doesn't use due to thread group start is implemented
         // mngthr->StartLoop();
@@ -860,9 +862,11 @@ bool TServer::Stop() //noexcept
     }
     m_acceptor.cancel(ec);
     m_ioservice.run(ec);
+    // all threads was destroided
     {
-        std::unique_lock<std::recursive_mutex>  lock(m_mtx_garbage);
         m_socketset_garbage.clear();
+        m_mtx_activepool.clear();
+        m_mtx_garbagepool.clear();
     }
     m_acceptor.close(ec);
     m_ioservice.stop();
@@ -907,7 +911,7 @@ void TServer::process_iooperations(IThread* _th, thcode_t _idx)
         }
         LOG << "s: server thread loop is stopping";
         {
-            std::unique_lock<std::recursive_mutex>  lock2(m_mtx_active);
+            std::unique_lock<ticketspinlock_t>  lock2(m_mtx_activepool[_idx]);
             for(auto& x: m_socketset_active[_idx])
             {
                 x->Cancel(true);
@@ -1033,15 +1037,15 @@ void TServer::do_reaccept(ssocketPtr_t _client)
 
 void TServer::insertSocket(const ssocketPtr_t& _ptr, thcode_t _code)
 {
-    std::unique_lock<std::recursive_mutex>  lock(m_mtx_active);
+    std::unique_lock<ticketspinlock_t>  lock(m_mtx_activepool[_code]);
     assert(m_socketset_active.size() > _code);
     m_socketset_active[_code].insert(_ptr);
 }
 
 void TServer::removeSocket(const ssocketPtr_t& _ptr, thcode_t _code)
 {
-    std::unique_lock<std::recursive_mutex>  lock(m_mtx_garbage);
-    std::unique_lock<std::recursive_mutex>  lock2(m_mtx_active);
+    std::unique_lock<ticketspinlock_t>  lock(m_mtx_garbagepool[_code]);
+    std::unique_lock<ticketspinlock_t>  lock2(m_mtx_activepool[_code]);
     assert(m_socketset_active.size() > _code);
     assert(m_socketset_garbage.size() > _code);
     auto it_garbage = m_socketset_garbage[_code].find(_ptr);
@@ -1058,14 +1062,14 @@ void TServer::removeSocket(const ssocketPtr_t& _ptr, thcode_t _code)
 
 std::size_t TServer::getSockListSize(thcode_t _code) const
 {
-    std::unique_lock<std::recursive_mutex>  lock(m_mtx_active);
+    std::unique_lock<ticketspinlock_t>  lock(m_mtx_activepool[_code]);
     assert(m_socketset_active.size() >= _code);
     return m_socketset_active[_code].size();
 }
 
 void TServer::clearGarbage(thcode_t _code)
 {
-    std::unique_lock<std::recursive_mutex>  lock(m_mtx_garbage);
+    std::unique_lock<ticketspinlock_t>  lock(m_mtx_garbagepool[_code]);
     assert(m_socketset_garbage.size() >= _code);
     m_socketset_garbage[_code].clear(); //noexcept
 }

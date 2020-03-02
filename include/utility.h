@@ -356,6 +356,12 @@ ALWAYS_INLINE static void CpuRelax() noexcept
 class ticketspinlock_t
 {
 public:
+    ticketspinlock_t() = default;
+    ticketspinlock_t(const ticketspinlock_t& _tk)
+    {
+        ServingTicketNo = _tk.ServingTicketNo.load();
+        NextTicketNo = _tk.NextTicketNo.load();
+    }
     ALWAYS_INLINE void lock() noexcept
     {
         const auto myTicketNo = NextTicketNo.fetch_add(1, std::memory_order_relaxed);
