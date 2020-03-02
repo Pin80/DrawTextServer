@@ -800,7 +800,7 @@ bool TServer::Start(const char* _addr,
         const auto max_attempts = 30;
         const auto delay_quant = 100;
         auto nattempts = 0;
-        if (m_threadnumber >0)
+        if (m_threadnumber > 0)
         {
             while(!result)
             {
