@@ -180,6 +180,8 @@ private:
     hCode_t m_lastHCode = 0;
     std::vector<ticket_t> m_ticketpool;
     std::atomic_bool m_isworking = false;
+    std::uint16_t m_max_reconnattempts = 0;
+    std::uint16_t m_reconndelay = 0;
 };
 }
 

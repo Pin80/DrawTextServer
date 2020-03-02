@@ -4,7 +4,9 @@ TClient::TClient(clientconfig_t &_cc)
     : m_host(_cc.m_host),
       m_port(_cc.m_port),
       m_pproc(_cc.m_pproc),
-      m_paral(_cc.m_paral)
+      m_paral(_cc.m_paral),
+      m_max_reconnattempts(_cc.m_max_reconnattempts),
+      m_reconndelay(_cc.m_reconndelay)
 {
     const char * FUNCTION = __FUNCTION__;
     try
@@ -111,7 +113,8 @@ bool TClient::ConnectAsync()
 
 bool TClient::Connect()
 {
-    std::uint16_t nattempts = 10;
+    auto nattempts = m_max_reconnattempts;
+    auto delay = m_reconndelay * 1000;
     bool result = false;
 
     do
@@ -128,8 +131,7 @@ bool TClient::Connect()
             result = allConnected();
             if (!result)
             {
-
-                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                std::this_thread::sleep_for(std::chrono::milliseconds(delay));
             }
         }
         nattempts--;

@@ -78,10 +78,6 @@ protected:
     {
         m_pclient.reset();
         cc.m_pproc.reset();
-        //m_pserver.reset();
-        //m_pclient.reset();
-        //m_psproc.reset();
-        //m_pcproc.reset();
         ILogger::stop_log();
     }
 };
