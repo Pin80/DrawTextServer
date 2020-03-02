@@ -800,14 +800,21 @@ bool TServer::Start(const char* _addr,
         const auto max_attempts = 30;
         const auto delay_quant = 100;
         auto nattempts = 0;
-        while(!result)
+        if (m_threadnumber >0)
         {
-            result = m_state(state::run);
-            std::this_thread::sleep_for(milliseconds(delay_quant));
-            if (nattempts++ > max_attempts) break;
+            while(!result)
+            {
+                result = m_state(state::run);
+                std::this_thread::sleep_for(milliseconds(delay_quant));
+                if (nattempts++ > max_attempts) break;
+            }
+            if (!result)
+                { Stop(); }
         }
-        if (!result)
-            { Stop(); }
+        else
+        {
+            result = true;
+        }
         return result;
     }
     catch(...)

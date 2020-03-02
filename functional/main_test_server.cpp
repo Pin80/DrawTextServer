@@ -66,13 +66,23 @@ public:
     clientconfig_t cc;
 protected:
     void SetUp()
-    {     }
+    {
+        ILogger::start_log();
+        cc.m_host = "127.0.0.1";
+        cc.m_port = 1080;
+        cc.m_paral = 8;
+        cc.m_pproc = std::make_shared<ClientProcessor>();
+        m_pclient = std::make_shared<TClient>(cc);
+    }
     void TearDown()
     {
+        m_pclient.reset();
+        cc.m_pproc.reset();
         //m_pserver.reset();
         //m_pclient.reset();
         //m_psproc.reset();
         //m_pcproc.reset();
+        ILogger::stop_log();
     }
 };
 
@@ -117,21 +127,19 @@ TEST_F(TTestBench, server_abort)
 
 TEST_F(TTestBench, server_match)
 {
-    ILogger::start_log();
+
     bool result = false;
     sc.m_proc = std::make_unique<ServerProcessor>(true);
-    cc.m_pproc = std::make_shared<ClientProcessor>();
+
     auto x = dynamic_cast<ServerProcessor*>(sc.m_proc.get());
     auto y = dynamic_cast<ClientProcessor*>(cc.m_pproc.get());
     sc.m_addr = "127.0.0.1";
     sc.m_port = 1080;
     sc.m_connlimit = 9;
-    cc.m_host = sc.m_addr;
-    cc.m_port = sc.m_port;
-    cc.m_paral = sc.m_connlimit - 1;
+
     sc.m_threadnumber = 2;
     m_pserver = TServer::CreateServer(sc);
-    m_pclient = std::make_shared<TClient>(cc);
+
     result = m_pserver->Start();
     if (result)
     {
@@ -148,7 +156,7 @@ TEST_F(TTestBench, server_match)
 
         //delay(5500);
         LOG << "+====================1========================";
-        delay(100);
+        delay(200);
         LOG << "+====================2========================";
         m_pserver->Stop();
         delay(100);
@@ -163,20 +171,17 @@ TEST_F(TTestBench, server_match)
     }
     TServer::DestroyServer();
     m_pserver.reset();
-    m_pclient.reset();
     sc.m_proc.reset();
-    cc.m_pproc.reset();
+
     delay(1000);
-    ILogger::stop_log();
     ASSERT_EQ(result, true);
 }
 
 
-/*
+
 TEST_F(TTestBench, server_startstop)
 {
     delay(300);
-    ILogger::start_log();
     LOG << "+==============______0_______=====================";
     delay(200);
     bool result = false;
@@ -211,16 +216,14 @@ TEST_F(TTestBench, server_startstop)
 
     sc.m_proc.reset();
     TServer::DestroyServer();
-    ILogger::stop_log();
     ASSERT_EQ(result, true);
 }
-*/
 
-/*
+
+
 TEST_F(TTestBench, server_startstop2)
 {
     delay(500);
-    ILogger::start_log();
     bool result = false;
     sc.m_proc = std::make_unique<ServerProcessor>(true);
     sc.m_addr = "127.0.0.1";
@@ -238,20 +241,17 @@ TEST_F(TTestBench, server_startstop2)
         m_pmserver->Stop();
         delay(100);
         result = !m_pmserver->isError();
+        LOG << str_sum("result:", result);
     }
     m_pmserver.reset();
-
-    sc.m_proc.reset();
     TServer::DestroyServer();
-    ILogger::stop_log();
+    sc.m_proc.reset();
     ASSERT_EQ(result, true);
 }
-*/
 
-/*
+
 TEST_F(TTestBench, server_throw1)
 {
-    ILogger::start_log();
     LOG << "+===============SYART THROW TEST=====================";
     delay(500);
 
@@ -288,11 +288,9 @@ TEST_F(TTestBench, server_throw1)
     sc.m_proc.reset();
     TServer::DestroyServer();
 
-    ILogger::stop_log();
-
     ASSERT_EQ(result, true);
 }
-*/
+
 
 #define AUTO_TEST
 #if defined(__GNUC__) || defined(__MINGW32__)
