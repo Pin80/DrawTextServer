@@ -178,6 +178,9 @@ void controller_t::client_connection_action()
 {
     std::uint16_t nattempts = m_ac.m_cc.m_max_reconnattempts;
     bool result_conn = false;
+    const auto& ref = m_ac.m_cc.m_pproc.get();
+    auto ptr = dynamic_cast<clientImgProcessor_t *>(ref);
+    ptr->reset_succcnt();
     do
     {
         result_conn = m_pclient->ConnectAsync();
@@ -204,4 +207,19 @@ void controller_t::client_connection_action()
         }
         nattempts--;
     } while(!result_conn && nattempts);
+    if (result_conn)
+    {
+        if (ptr->get_succcnt() == m_ac.m_cc.m_paral)
+        {
+            OUT("RESULT: SUCCESS!")
+        }
+        else
+        {
+            OUT("RESULT: FAIL!")
+        }
+    }
+    else
+    {
+        OUT("RESULT: FAIL!")
+    }
 }

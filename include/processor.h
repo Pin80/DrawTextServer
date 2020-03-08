@@ -195,7 +195,8 @@ public:
                                 const ticket_t& _tk,
                                 abstcomplptr_t _compl) = 0;
     virtual bool isAvailable(const ticket_t& _tk) = 0;
-    virtual eCompl_t getComplType() { return eCompl_t::none; }
+    virtual eCompl_t getComplType()
+    { return eCompl_t::none; }
     virtual ~IProcessor_t() = default;
 };
 
@@ -221,7 +222,8 @@ public:
                                 abstcomplptr_t _compl,
                                 rdyHandlerPtr_t& _hnd) = 0;
     virtual bool isAvailable(const ticket_t& _tk) = 0;
-    virtual eCompl_t getComplType() { return eCompl_t::none; }
+    virtual eCompl_t getComplType()
+    { return eCompl_t::none; }
     virtual ~IServerProcessor_t() = default;
 };
 using ISMP = IServerProcessor_t;

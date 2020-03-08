@@ -160,13 +160,15 @@ bool clientImgProcessor_t::process_output_data(mvconv_t _data,
                 return result;
             }
             auto uc = std::any_cast<Tpackstruct>(unpack.m_current);
-
-            result = compare_resp(_tk,
-                                  valconv_t(uc->m_data.get()),
-                                  uc->m_imgsize);
+            if (m_compare)
+            {
+                result = compare_resp(_tk,
+                                      valconv_t(uc->m_data.get()),
+                                      uc->m_imgsize);
+            }
             if (result)
             {
-
+                m_nsucces++;
                 save_result(m_outname, uc);
             }
             else
