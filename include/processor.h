@@ -18,6 +18,9 @@ enum class eCompl_t {none, http, bin, compound, debug};
 class binpack_compleater_t;
 class http_compleater_t;
 
+/** @class ICompleter_t
+ *  @brief Класс интерфейса комплитера
+ */
 class ICompleter_t : public boost::noncopyable
 {
 protected:
@@ -35,6 +38,9 @@ public:
 
 class complwrapper_t;
 
+/** @class binpack_completer_t
+ *  @brief Класс комплитера бинарного пакета
+ */
 class binpack_completer_t: public ICompleter_t,
                          public binpacket_t
 {
@@ -92,6 +98,9 @@ protected:
     std::uint16_t m_crc_estimated;
 };
 
+/** @class binpack_completer_t
+ *  @brief Класс комплитера составного пакета
+ */
 class compound_completer_t: public binpack_completer_t
 {
 public:
@@ -118,7 +127,9 @@ private:
     ePackType_t m_type = ePackType_t::bin;
 };
 
-
+/** @class http_completer_t
+ *  @brief Класс пакета с терминатором \\r\\n\\r\\n
+ */
 class http_completer_t: public ICompleter_t
 {
 public:
@@ -139,6 +150,9 @@ private:
     upair_t& m_buff;
 };
 
+/** @class http_completer_t
+ *  @brief Класс универсального комплитера (адаптер)
+ */
 class complwrapper_t
 {
 protected:
@@ -159,12 +173,16 @@ public:
         }
         return 0;
     }
-    bool isError() const {return  m_pimpl->isError(); }
+    bool isError() const
+    { return  m_pimpl->isError(); }
     std::shared_ptr<ICompleter_t> getNativeCompl()
     { return m_pimpl; }
 };
 
-class IProcessor
+/** @class IProcessor_t
+ *  @brief Класс интерфейса обработчика данных
+ */
+class IProcessor_t
 {
 public:
     using bstmbuffptr_t = cpconv_t::bstmbuffptr_t;
@@ -178,10 +196,13 @@ public:
                                 abstcomplptr_t _compl) = 0;
     virtual bool isAvailable(const ticket_t& _tk) = 0;
     virtual eCompl_t getComplType() { return eCompl_t::none; }
-    virtual ~IProcessor() = default;
+    virtual ~IProcessor_t() = default;
 };
 
-class IServerProcessor
+/** @class IServerProcessor_t
+ *  @brief Класс интерфейса обработчика запросов со стороны сервера
+ */
+class IServerProcessor_t
 {
 public:
     using readyHandler_t = std::function<void ()>;
@@ -201,9 +222,9 @@ public:
                                 rdyHandlerPtr_t& _hnd) = 0;
     virtual bool isAvailable(const ticket_t& _tk) = 0;
     virtual eCompl_t getComplType() { return eCompl_t::none; }
-    virtual ~IServerProcessor() = default;
+    virtual ~IServerProcessor_t() = default;
 };
-using ISMP = IServerProcessor;
+using ISMP = IServerProcessor_t;
 
 
 #endif // PROCESSOR_H

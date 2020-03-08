@@ -40,7 +40,7 @@ struct clientconfig_t
     std::string m_host;
     std::uint16_t m_port;
     std::size_t m_paral = 1;
-    std::shared_ptr<IProcessor> m_pproc;
+    std::shared_ptr<IProcessor_t> m_pproc;
     std::uint16_t m_max_reconnattempts = 10;
     std::uint16_t m_reconndelay = 3;
 };
@@ -160,7 +160,7 @@ private:
     boost::asio::io_service m_ioservice;
     std::unique_ptr<mngthread_t> m_pthread;
     std::atomic_bool m_do_start_all_operations = false;
-    std::shared_ptr<IProcessor> m_pproc;
+    std::shared_ptr<IProcessor_t> m_pproc;
     std::size_t m_paral = 0;
     std::vector<TSockPtr> m_socketpool;
     std::vector<clientState_t> m_statepool;

@@ -181,6 +181,7 @@ public:
     {
         m_cptr = std::move(_cptr.first);
         m_size = _cptr.second;
+        _cptr.second = 0;
         type = cpconv_t::echaruptr_t;
     }
     mvconv_t(bstmbuffptr_t&& _pbufptr)
@@ -266,7 +267,6 @@ public:
     }
     bool operator < (const ticket_t& _t) const
     {
-
         return std::lexicographical_compare(std::begin(m_val),
                                           std::end(m_val),
                                           std::begin(_t.m_val),
@@ -288,9 +288,7 @@ private:
 };
 
 constexpr auto static_strlen(const char * _str ) noexcept
-{
-  return std::char_traits<char>::length(_str);
-}
+{   return std::char_traits<char>::length(_str); }
 
 using value_t = unsigned char;
 
@@ -303,9 +301,9 @@ public:
         m_ptr(reinterpret_cast<const unsigned char *>(_ptr)) {}
     operator const value_t *() const noexcept {return m_ptr; }
     operator const char *() const noexcept
-    {return reinterpret_cast<const char *>(m_ptr); }
+    { return reinterpret_cast<const char *>(m_ptr); }
     operator const void *() const noexcept
-    {return m_ptr; }
+    { return m_ptr; }
     cvalconv_t& operator+(std::size_t _ofs) noexcept
     {   m_ptr += _ofs;   return *this;  }
     // this is not safe ptr:
@@ -325,9 +323,9 @@ public:
 
     operator value_t *() const noexcept {return m_ptr; }
     operator char *() const noexcept
-    {return reinterpret_cast<char *>(m_ptr); }
+    { return reinterpret_cast<char *>(m_ptr); }
     operator void *() const noexcept
-    {return m_ptr; }
+    { return m_ptr; }
     valconv_t& operator+(std::size_t _ofs) noexcept
     {   m_ptr += _ofs;   return *this;  }
     // this is not safe ptr:

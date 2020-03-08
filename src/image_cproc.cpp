@@ -13,7 +13,7 @@ static const char * simple_reply_busy =
         "BUSY\r\n\r\n";
 
 
-ClientImgProcessor::ClientImgProcessor(ciprocessor_t& _config):
+clientImgProcessor_t::clientImgProcessor_t(ciprocessor_t& _config):
     m_outname(_config.m_oname),
     m_compare(_config.m_compare)
 {
@@ -60,7 +60,7 @@ ClientImgProcessor::ClientImgProcessor(ciprocessor_t& _config):
     }
 }
 
-bool ClientImgProcessor::create_packet(upair_t &_fpair)
+bool clientImgProcessor_t::create_packet(upair_t &_fpair)
 {
     compndpack_t pk_creator;
     m_pcbuffer_req = pk_creator.make_packet(_fpair,
@@ -69,7 +69,7 @@ bool ClientImgProcessor::create_packet(upair_t &_fpair)
     return result;
 }
 
-void ClientImgProcessor::save_result(const std::string &_fname,
+void clientImgProcessor_t::save_result(const std::string &_fname,
                                      const Tpackstruct &_ps)
 {
     std::ofstream ostm;
@@ -82,7 +82,7 @@ void ClientImgProcessor::save_result(const std::string &_fname,
     }
 }
 
-void ClientImgProcessor::get_input_data(cpconv_t _data,
+void clientImgProcessor_t::get_input_data(cpconv_t _data,
                                      const ticket_t& _tk)
 {
     const char * FUNCTION = __FUNCTION__;
@@ -97,7 +97,7 @@ void ClientImgProcessor::get_input_data(cpconv_t _data,
     }
 }
 
-bool ClientImgProcessor::process_output_data(mvconv_t _data,
+bool clientImgProcessor_t::process_output_data(mvconv_t _data,
                                           const ticket_t& _tk,
                                           abstcomplptr_t _compl)
 {
@@ -185,7 +185,7 @@ bool ClientImgProcessor::process_output_data(mvconv_t _data,
     }
 }
 
-bool ClientImgProcessor::compare_resp(const ticket_t& _tk,
+bool clientImgProcessor_t::compare_resp(const ticket_t& _tk,
                                       const char * _ptr,
                                       std::size_t _size)
 {
@@ -213,21 +213,21 @@ bool ClientImgProcessor::compare_resp(const ticket_t& _tk,
    return  result;
 }
 
-bool ClientImgProcessor::compare_busy(const ticket_t& _tk,
+bool clientImgProcessor_t::compare_busy(const ticket_t& _tk,
                                       const char * _ptr,
                                       std::size_t _size)
 {
     return compare_str(_tk, _ptr, _size, simple_reply_busy);
 }
 
-bool ClientImgProcessor::compare_bad(const ticket_t &_tk,
+bool clientImgProcessor_t::compare_bad(const ticket_t &_tk,
                                      const char *_ptr,
                                      std::size_t _size)
 {
    return compare_str(_tk, _ptr, _size, simple_reply_bad);
 }
 
-bool ClientImgProcessor::compare_str(const ticket_t &_tk,
+bool clientImgProcessor_t::compare_str(const ticket_t &_tk,
                                      const char *_ptr,
                                      std::size_t _size,
                                      const char *_str)
@@ -256,7 +256,7 @@ bool ClientImgProcessor::compare_str(const ticket_t &_tk,
 
 }
 
-bool ClientImgProcessor::isAvailable(const ticket_t& _tk)
+bool clientImgProcessor_t::isAvailable(const ticket_t& _tk)
 {
     if (m_contextpool[_tk].m_isavailble)
     {

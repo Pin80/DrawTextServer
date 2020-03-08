@@ -25,19 +25,19 @@ namespace errspace
 }
 
 
-class loggerImpl : boost::noncopyable
+class loggerImpl_t : boost::noncopyable
 {
 protected:
     static constexpr char prompt[] = "LOG:";
     static constexpr char rt[] = "\n";
 public:
     static constexpr auto prefix_size = sizeof(prompt) + sizeof (rt);
-    loggerImpl() = default;
+    loggerImpl_t() = default;
     virtual void write_log(const char *, FILE* device = nullptr) const = 0;
-    virtual ~loggerImpl() = default;
+    virtual ~loggerImpl_t() = default;
 };
 
-class loggerImplST_t : public loggerImpl
+class loggerImplST_t : public loggerImpl_t
 {
 public:
     loggerImplST_t() = default;
@@ -71,7 +71,7 @@ std::mutex m_loggermtx;
 #endif
 }
 
-class loggerImplMT_t : public loggerImpl
+class loggerImplMT_t : public loggerImpl_t
 {
 private:
 public:
@@ -134,7 +134,7 @@ public:
 protected:
     static constexpr auto max_queue_size = 8;
     mutable std::list<std::string> m_queue;
-    static std::unique_ptr<loggerImpl> m_pimpl;
+    static std::unique_ptr<loggerImpl_t> m_pimpl;
     std::unique_ptr<baseLogger_t> m_prevlogger;
     std::string getTimeDateStr(const char * _msg) const
     {
@@ -246,7 +246,7 @@ public:
             }
             fullstr += _msg;
             fullstr = getTimeDateStr(fullstr.c_str());
-            auto psize = loggerImpl::prefix_size;
+            auto psize = loggerImpl_t::prefix_size;
             m_file_buff_size += psize + fullstr.size();
             if (m_file_buff_size > max_logfilesize)
             {
@@ -372,7 +372,7 @@ public:
     virtual ~emptyLogger_t() = default;
 };
 
-std::unique_ptr<loggerImpl> baseLogger_t::m_pimpl;
+std::unique_ptr<loggerImpl_t> baseLogger_t::m_pimpl;
 std::recursive_mutex baseLogger_t::m_mtx;
 
 std::unique_ptr<ILogger> getLogDecorator(bool _noreal)

@@ -279,7 +279,7 @@ bool ServerProcessor::isAvailable(const ticket_t& _tk)
 //==========================================================================
 //==========================================================================
 
-class ClientProcessor: public IProcessor
+class ClientProcessor: public IProcessor_t
 {
     bool m_binarypack = false;
 public:

@@ -18,7 +18,7 @@ using tcp = boost::asio::ip::tcp;
 serversocket_t::serversocket_t(io_service& _srv,
                        IServerBase* _base,
                        thcode_t _code,
-                       IServerProcessor* _proc)
+                       IServerProcessor_t* _proc)
     : m_sock(_srv),
       m_base(_base),
       m_timer(_srv),
@@ -71,7 +71,7 @@ bool serversocket_t::Cancel(bool _isthstopped)
 
 void serversocket_t::SetAction()
 {
-    using readyHandler_t = IServerProcessor::readyHandler_t;
+    using readyHandler_t = IServerProcessor_t::readyHandler_t;
     auto weak = weak_from_this();
     readyHandler_t hnd = [weak]()
     {

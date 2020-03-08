@@ -20,7 +20,7 @@ public:
     /// Конструктор класса "серверных сокетов"
     explicit MockSocket(io_service& _srv,
                            IServerBase* _base,
-                           IServerProcessor* _proc = nullptr);
+                           IServerProcessor_t* _proc = nullptr);
     /// Деструктор класса
     virtual ~MockSocket();
     friend MockServer;
@@ -63,7 +63,7 @@ class MockServer2: public TServer
 {
 public:
     /// Конструктор класса
-    MockServer2(serverconfig_t &_sc, IServerProcessor* _ptr) : TServer(_sc)
+    MockServer2(serverconfig_t &_sc, IServerProcessor_t* _ptr) : TServer(_sc)
     {
         auto ptr = _ptr;
         m_procmock = ptr;
@@ -128,7 +128,7 @@ protected:
         throw std::exception();
     }
 private:
-    IServerProcessor* m_procmock;
+    IServerProcessor_t* m_procmock;
 };
 
 

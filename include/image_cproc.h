@@ -16,6 +16,9 @@
 #include "../include/processor.h"
 #include "../include/comb_packet.h"
 
+/** @class clientImgProcessor_t
+ *  @brief Класс конфигурации обработчика ответов
+ */
 struct ciprocessor_t
 {
     bool m_compare = false;
@@ -24,7 +27,10 @@ struct ciprocessor_t
     std::string m_oname;
 };
 
-class ClientImgProcessor: public IProcessor
+/** @class clientImgProcessor_t
+ *  @brief Класс обработчика ответов
+ */
+class clientImgProcessor_t: public IProcessor_t
 {
 public:
     using Tpackstruct = std::shared_ptr<compndpack_t::unpacked_tComb>;
@@ -49,7 +55,7 @@ public:
             m_isavailble = _ctx.m_isavailble;
         }
     };
-    ClientImgProcessor(ciprocessor_t &_config);
+    clientImgProcessor_t(ciprocessor_t &_config);
     virtual void get_input_data(cpconv_t _data,
                                 const ticket_t& _tk) override final;
     virtual bool process_output_data(mvconv_t _data,

@@ -35,7 +35,7 @@ controller_t::controller_t(int argc, char *argv[])
     if (m_ac.m_clientmode)
     {
         OUT("DrawText Client is started")
-        m_ac.m_cc.m_pproc = std::make_shared<ClientImgProcessor>(m_ac.m_ci);
+        m_ac.m_cc.m_pproc = std::make_shared<clientImgProcessor_t>(m_ac.m_ci);
         m_ac.m_cc.m_paral = 1;
         m_pclient = std::make_shared<TClient>(m_ac.m_cc);
     }

@@ -16,6 +16,9 @@
 #include "../include/processor.h"
 #include "../include/comb_packet.h"
 
+/** @struct siprocessor_t
+ *  @brief структура конфигурации обработчика картинок
+ */
 struct siprocessor_t
 {
     /// Размер очереди по умолчанию

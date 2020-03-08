@@ -29,7 +29,7 @@ using error_code = boost::system::error_code;
 struct serverconfig_t : boost::noncopyable
 {
     /// Тип указателя на обработчик запросов
-    using IProcessorPtr = std::unique_ptr<IServerProcessor>;
+    using IProcessorPtr = std::unique_ptr<IServerProcessor_t>;
     std::string m_addr;
     std::uint16_t m_port;
     IProcessorPtr m_proc;
@@ -101,7 +101,7 @@ public:
     explicit serversocket_t(io_service& _srv,
                            IServerBase* _base,
                            thcode_t _code,
-                           IServerProcessor* _proc = nullptr);
+                           IServerProcessor_t* _proc = nullptr);
     /// Деструктор класса
     virtual ~serversocket_t();
     /// Отменить все операции
@@ -194,7 +194,7 @@ private:
     /// с комплитеом на основе семантики перемещения
     spair_t m_response_owner;
     /// Указатель на интерфейс обработчика запросов
-    IServerProcessor * m_proc = nullptr;
+    IServerProcessor_t * m_proc = nullptr;
     /// Указатель на комплитер
     std::unique_ptr<complwrapper_t> m_gencompl;
     /// Флаг начала удаления объекта
@@ -209,7 +209,7 @@ private:
     thcode_t m_thcode = noThCode;
     /// Указатель на обработчик сигнала завершения
     /// обработки запроса
-    IServerProcessor::rdyHandlerPtr_t m_handlerptr;
+    IServerProcessor_t::rdyHandlerPtr_t m_handlerptr;
     /// Счётчик циклов ожидания обработки запроса
     std::uint8_t m_proctimecnt = MAX_ATTEMPTS;
     /// Спинлок для синхронизации при попытки пробуждения таймера

@@ -62,21 +62,21 @@
 extern std::mutex m_loggermtx;
 #define LOCK  std::unique_lock<std::mutex> lock(m_loggermtx);
 #define OUT(str) { LOCK  std::cerr << str << std::endl; };
-#if (USE_DO == 1)// && (BUILDTYPE == BUILD_DEBUG)
-#define DBGOUT(str) { LOCK  std::cerr << str << std::endl; }
-#define DBGOUT2(str, num) { LOCK \
-    std::cerr << str << std::to_string(num) << std::endl; }
-#define DBGOUT4(str, num, str2, num2) { LOCK \
-    std::cerr << str << std::to_string(num) << str2 << std::to_string(num2) \
-    << std::endl; }
-#define DBGOUT6(str, num, str2, num2, str3, num3) { LOCK \
-    std::cerr << str << std::to_string(num) << str2 << std::to_string(num2) \
-    << str3 << std::to_string(num3) << std::endl;}
+#if (USE_DO == 1) && (BUILDTYPE == BUILD_DEBUG)
+    #define DBGOUT(str) { LOCK  std::cerr << str << std::endl; }
+    #define DBGOUT2(str, num) { LOCK \
+        std::cerr << str << std::to_string(num) << std::endl; }
+    #define DBGOUT4(str, num, str2, num2) { LOCK \
+        std::cerr << str << std::to_string(num) << str2 << std::to_string(num2) \
+        << std::endl; }
+    #define DBGOUT6(str, num, str2, num2, str3, num3) { LOCK \
+        std::cerr << str << std::to_string(num) << str2 << std::to_string(num2) \
+        << str3 << std::to_string(num3) << std::endl;}
 #else
-#define DBGOUT(str) ;
-#define DBGOUT2(str, num)
-#define DBGOUT4(str, num, str2, num2)
-#define DBGOUT6(str, num, str2, num2, str3, num3)
+    #define DBGOUT(str) ;
+    #define DBGOUT2(str, num)
+    #define DBGOUT4(str, num, str2, num2)
+    #define DBGOUT6(str, num, str2, num2, str3, num3)
 #endif
 
 #endif // COMMON_H

@@ -10,7 +10,7 @@
 #include "../../include/watchdog.h"
 #include "../../include/processor.h"
 
-class ClientProcessor: public IProcessor
+class ClientProcessor: public IProcessor_t
 {
 public:
     ClientProcessor();
