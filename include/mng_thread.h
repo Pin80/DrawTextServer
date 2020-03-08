@@ -87,8 +87,10 @@ private:
     Tcodes m_codes;
 };
 
+/// @class threadErrStatus_t
 class threadErrStatus_t
 {
+      /// Флаг ошибки одного или нескольких потоков в приложении
       static bool m_destructor_error;
 protected:
       static bool GetDestructorError()
@@ -99,6 +101,8 @@ protected:
       { m_destructor_error = true; }
 };
 
+/// @class IThread
+/// @brief Интерфейс класса менеджмента потока
 class IThread
 {
 public:
@@ -112,6 +116,8 @@ public:
     virtual std::thread::native_handle_type GetThreadID() const = 0;
 };
 
+/// @struct cvwrapper_t
+/// @brief Специализация класса для индвидуального старта потока
 template <typename Func, class Class, bool isStatic>
 struct cvwrapper_t
 {
@@ -122,6 +128,8 @@ struct cvwrapper_t
     std::atomic<bool> m_isEnableRunning = {false};
 };
 
+/// @struct cvwrapper_t
+/// @brief Специализация класса для группового старта потоков
 template <typename Func, class Class>
 struct cvwrapper_t<Func, Class, true>
 {
