@@ -36,17 +36,20 @@ int main(int argc, char *argv[])
     {
       errspace::show_errmsg(ex.what());
       errspace::show_errmsg(FUNCTION);
+      return EXIT_FAILURE;
     }
     catch (const std::runtime_error &ex)
     {
       errspace::show_errmsg(ex.what());
       errspace::show_errmsg(FUNCTION);
+      return EXIT_FAILURE;
     }
     catch (...)
     {
         errspace::show_errmsg(FUNCTION);
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 #if defined(__GNUC__) || defined(__MINGW32__)
 #pragma GCC diagnostic pop
