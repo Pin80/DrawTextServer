@@ -155,7 +155,7 @@ protected:
     void TearDown()  {     }
 };
 
-#define FILEPATH  "/home/user/MySoftware/itv_testtask/itv_testtask/Resources"
+#define FILEPATH  "./Resources"
 const char * TTestBench_other::fullname_bin =
         FILEPATH"/package1.bin";
 const char * TTestBench_other::fullname_http =
@@ -748,6 +748,7 @@ TEST_F(TTestBench_other, Compl_test1)
     ASSERT_EQ(result, true);
 }
 
+
 TEST_F(TTestBench_other, Compl_test2)
 {
     bool result = false;
@@ -847,8 +848,7 @@ cairo_status_t write_to_pngbuff(void * _closure,
 TEST_F(TTestBench_other, Cairo_test1)
 {
     ILogger::start_log();
-    static constexpr auto path = "/home/user/MySoftware/"
-                                 "itv_testtask/itv_testtask/Resources/";
+    static constexpr auto path = "./Resources/";
 
     typedef std::unique_ptr<value_t> TCairoBuffPtr;
     using Tpackstruct = std::shared_ptr<compndpack_t::unpacked_tComb>;
@@ -979,8 +979,7 @@ TEST_F(TTestBench_other, Cairo_test2)
 {
     ILogger::start_log();
     bool result = false;
-    static constexpr auto path = "/home/user/MySoftware/"
-                                 "itv_testtask/itv_testtask/Resources/";
+    static constexpr auto path = "./Resources/";
     std::string fullname = path;
     std::string fullname_out = path;
     fullname += "img_in.png";
