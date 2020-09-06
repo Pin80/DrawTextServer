@@ -118,7 +118,8 @@ public:
         {
             if ((m_pcdest) && (_ptr.first))
             {
-                char* rptr = (_ptr.second != 0)?new char[_ptr.second]:nullptr;
+                simplechar_t* rptr = (_ptr.second != 0)?
+                            new simplechar_t[_ptr.second]:nullptr;
                 m_pcdest->first.reset(rptr);
                 memcpy(rptr, _ptr.first.get(), _ptr.second);
                 m_pcdest->second = _ptr.second;
@@ -134,7 +135,8 @@ public:
             {
                 using iterator = std::istreambuf_iterator<char>;
                 const auto size = _ptr.get()->size();
-                char * newbuf = (size != 0)?new char[size]:nullptr;
+                simplechar_t * newbuf = (size != 0)?
+                            new simplechar_t[size]:nullptr;
                 m_pcdest->first.reset(newbuf);
                 auto it_dest_start = newbuf;
                 iterator it_src_start(_ptr.get());
@@ -196,7 +198,7 @@ public:
             using iterator = std::istreambuf_iterator<char>;
             const auto size = (m_bufptr)?m_bufptr.get()->size():0;
             upair_t pair;
-            char * newbuf = (size > 0)?new char[size]:nullptr;
+            simplechar_t * newbuf = (size > 0)?new simplechar_t[size]:nullptr;
             pair.first.reset(newbuf);
             pair.second = size;
             if (newbuf)

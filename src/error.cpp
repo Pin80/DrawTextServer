@@ -99,7 +99,8 @@ class errFLogger_t
         if (ec) return;
         // also check access
         fs::resize_file(fpath, max_errlogfilesize, ec);
-        //if (ec) return;
+        // no error when file doesn't exist
+        // if (ec) return;
         logFile = fopen(error_log_filename, "w");
         if (logFile == nullptr)
         {
