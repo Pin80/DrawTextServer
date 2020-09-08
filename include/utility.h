@@ -19,7 +19,7 @@ public:
 
 #define WATCHPOINT_NUMBER 10
 template <int _N>
-struct watchpoint_t
+struct watchpoint_t : boost::noncopyable
 {
     static std::any m_var;
     watchpoint_t<_N - 1> m_next;
@@ -294,7 +294,7 @@ constexpr auto static_strlen(const char * _str ) noexcept
 
 using value_t = unsigned char;
 
-class cvalconv_t
+class cvalconv_t : boost::noncopyable
 {
 public:
     constexpr cvalconv_t(const value_t * _ptr) noexcept :
@@ -315,7 +315,7 @@ private:
 };
 
 
-class valconv_t
+class valconv_t : boost::noncopyable
 {
 public:
     constexpr valconv_t(value_t * _ptr) noexcept :

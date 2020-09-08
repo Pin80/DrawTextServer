@@ -81,7 +81,7 @@ namespace  ns_wd
     }
 #endif
 
-    class watchDogImpl_t
+    class watchDogImpl_t: boost::noncopyable
     {
         using error_code = boost::system::error_code;
         using io_service = boost::asio::io_service;
