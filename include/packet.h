@@ -13,7 +13,7 @@
 /** @struct binpacket_t
  *  @brief Класс простого пакета
  */
-struct binpacket_t
+struct binpacket_t : boost::noncopyable
 {
     // incoptable with python
     // boost::crc_16_type crc_result;

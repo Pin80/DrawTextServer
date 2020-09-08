@@ -182,7 +182,7 @@ public:
 /** @class IProcessor_t
  *  @brief Класс интерфейса обработчика данных
  */
-class IProcessor_t
+class IProcessor_t : boost::noncopyable
 {
 public:
     using bstmbuffptr_t = cpconv_t::bstmbuffptr_t;
@@ -203,7 +203,7 @@ public:
 /** @class IServerProcessor_t
  *  @brief Класс интерфейса обработчика запросов со стороны сервера
  */
-class IServerProcessor_t
+class IServerProcessor_t : boost::noncopyable
 {
 public:
     using readyHandler_t = std::function<void ()>;

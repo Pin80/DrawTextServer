@@ -19,7 +19,7 @@
 /** @struct ciprocessor_t
  *  @brief Класс конфигурации обработчика ответов
  */
-struct ciprocessor_t
+struct ciprocessor_t : boost::noncopyable
 {
     /// флаг активации сравнения
     bool m_compare = false;
