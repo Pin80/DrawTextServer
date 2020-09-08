@@ -17,7 +17,7 @@
 #include "../include/image_cproc.h"
 #include "../include/image_sproc.h"
 
-class controller_t
+class controller_t : boost::noncopyable
 {
 public:
     controller_t(int argc, char *argv[]);
