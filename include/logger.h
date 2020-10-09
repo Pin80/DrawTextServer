@@ -12,9 +12,9 @@
 #include "../include/utility.h"
 #include "../include/error.h"
 
-inline std::string str_sum(std::string _s1, std::size_t _n)
+inline std::string str_sum(const std::string& _s1, std::size_t _n)
 { return _s1 + std::to_string(_n); }
-inline std::string str_sum(std::string _s1, std::string _s2)
+inline std::string str_sum(const std::string& _s1, const std::string& _s2)
 { return _s1 + _s2; }
 
 #ifdef NOLOGGER_OUTPUT
@@ -23,7 +23,7 @@ class FakeLogger
 public:
     void write_log(const char *) { };
     void pushfifo_log(const std::string&) {};
-    const FakeLogger& operator << (std::string _msg) const
+    const FakeLogger& operator << (const std::string& _msg) const
     {
         return *this;
     }
