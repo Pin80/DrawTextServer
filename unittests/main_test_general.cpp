@@ -601,7 +601,7 @@ TEST_F(TTestBench_other, Intype_test3)
     {
 
         cpconv_t::bstmbuffptr_t bufptr_dest = _bufptr.extractBufPtr();
-        if (!bufptr_dest.get()) return false;
+        if (!bufptr_dest) return false;
         const auto size = bufptr_dest.get()->size();
         if (size != TEST_SIZE)
         {
@@ -643,7 +643,7 @@ TEST_F(TTestBench_other, Intype_test4)
     {
 
         upair_t ptr_dest = _bufptr.extractPair();
-        if (!ptr_dest.first.get()) return false;
+        if (!ptr_dest.first) return false;
         const auto size = ptr_dest.second;
         if (size != TEST_SIZE)
         {

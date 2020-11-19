@@ -131,7 +131,7 @@ void ClientProcessor::get_input_data(cpconv_t _data, const ticket_t& _tk)
 {
     if (_data.getType() == cpconv_t::ebstmbuffptr_t)
     {
-        if (m_pbbuffer_req.get())
+        if (m_pbbuffer_req)
         {
             _data = m_pbbuffer_req;
         }
@@ -188,7 +188,7 @@ bool ClientProcessor::compare_resp()
 void ClientProcessor::do_compose(const std::string &server)
 {
     const auto path = "//";
-    if (!m_pbbuffer_req.get())
+    if (!m_pbbuffer_req)
     {
         m_pbbuffer_req = std::make_unique<bstmbuff_t>();
     }
