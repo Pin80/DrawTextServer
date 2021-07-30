@@ -13,5 +13,8 @@ GTest
 libstdc++fs
 librt
 cairo
+Для установки:
+apt-get install libfontconfig1-dev libcairo2-dev libgtest-dev libboost-dev cmake
 
 P.S. код сыроват. Все тесты проходит успешно, но могут быть баги.
+
