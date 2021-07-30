@@ -36,6 +36,7 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resources DESTINATION ${CMAKE_BINARY_DIR})
 # Подключаем различные библиотеки и хидеры
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 if(UNIX)
+#apt-get install libfontconfig1-dev libcairo2-dev libgtest-dev
     message("Configuring for Linux")
     find_package(GTest REQUIRED)
     find_package(Cairo REQUIRED)

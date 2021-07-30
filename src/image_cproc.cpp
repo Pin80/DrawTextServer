@@ -30,6 +30,8 @@ clientImgProcessor_t::clientImgProcessor_t(ciprocessor_t& _config):
         ifstm_req.seekg(0, std::ios::beg);
         char * ptr2 = (size_img > 0)?(new char[size_img]):nullptr;
         ifstm_req.read(ptr2, size_img);
+        if (!ifstm_req)
+            throw std::runtime_error("file IO operation Failure");
         upair_t pair;
         pair.first.reset(ptr2);
         pair.second = size_img;
